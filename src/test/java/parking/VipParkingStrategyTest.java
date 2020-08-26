@@ -25,7 +25,7 @@ public class VipParkingStrategyTest {
 
         vipParkingStrategy.carDao = carDao;
 
-        Car car = new Car("AJ1");
+        Car car = createMockCar("AJ1");
 
         Receipt receipt = vipParkingStrategy.park(parkingLots,car);
         assertEquals("Jay",receipt.getParkingLotName());
@@ -48,7 +48,7 @@ public class VipParkingStrategyTest {
 
         vipParkingStrategy.carDao = carDao;
 
-        Car car = new Car("AJ1");
+        Car car = createMockCar("AJ1");
 
         Receipt receipt = vipParkingStrategy.park(parkingLots,car);
         assertEquals(ParkingStrategy.NO_PARKING_LOT,receipt.getParkingLotName());
@@ -69,7 +69,7 @@ public class VipParkingStrategyTest {
         doReturn(true).when(newCarDao).isVip(anyString());
         vipParkingStrategy.carDao = newCarDao;
 
-        Car car = new Car("AJ1");
+        Car car = createMockCar("AJ1");
         assertTrue(vipParkingStrategy.isAllowOverPark(car));
 
     }
@@ -87,7 +87,7 @@ public class VipParkingStrategyTest {
         doReturn(true).when(newCarDao).isVip(anyString());
         vipParkingStrategy.carDao = newCarDao;
 
-        Car car = new Car("QQ1");
+        Car car = createMockCar("QQ1");
         assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
@@ -102,7 +102,7 @@ public class VipParkingStrategyTest {
         doReturn(false).when(newCarDao).isVip(anyString());
         vipParkingStrategy.carDao = newCarDao;
 
-        Car car = new Car("AQ1");
+        Car car = createMockCar("AQ1");
         assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
@@ -117,7 +117,7 @@ public class VipParkingStrategyTest {
         doReturn(false).when(newCarDao).isVip(anyString());
         vipParkingStrategy.carDao = newCarDao;
 
-        Car car = new Car("QJ1");
+        Car car = createMockCar("QJ1");
         assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
