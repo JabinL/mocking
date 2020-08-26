@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.mockito.Matchers.any;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -83,6 +83,27 @@ public class InOrderParkingStrategyTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
 
         ParkingLot parkingLotA = spy(new ParkingLot("A",10));
+        doReturn(true).when(parkingLotA).isFull();
+        parkingLots.add(parkingLotA);
+
+        Car car = new Car("che");
+
+        InOrderParkingStrategy inOrderParkingStrategy = new InOrderParkingStrategy();
+        Receipt receipt = inOrderParkingStrategy.park(parkingLots,car);
+
+        verify(parkingLotA,times(1)).isFull();
+
+        assertEquals("che",receipt.getCarName());
+        assertEquals(ParkingStrategy.NO_PARKING_LOT,receipt.getParkingLotName());
+    }
+
+    @Test
+    public void testPark_givenThereIsMultipleParkingLotAndFirstOneIsFull_thenCreateReceiptWithUnfullParkingLot(){
+
+        /* Exercise 3: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for multiple parking lot situation */
+        List<ParkingLot> parkingLots = new ArrayList<>();
+
+        ParkingLot parkingLotA = spy(new ParkingLot("A",10));
         ParkingLot parkingLotB = spy(new ParkingLot("B",10));
         ParkingLot parkingLotC = spy(new ParkingLot("C",10));
         doReturn(true).when(parkingLotA).isFull();
@@ -102,13 +123,6 @@ public class InOrderParkingStrategyTest {
 
         assertEquals("che",receipt.getCarName());
         assertEquals("B",receipt.getParkingLotName());
-    }
-
-    @Test
-    public void testPark_givenThereIsMultipleParkingLotAndFirstOneIsFull_thenCreateReceiptWithUnfullParkingLot(){
-
-        /* Exercise 3: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for multiple parking lot situation */
-
     }
 
 
