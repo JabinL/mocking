@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class VipParkingStrategyTest {
@@ -20,8 +20,13 @@ public class VipParkingStrategyTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         parkingLots.add(parkingLot);
         VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        CarDao carDao = spy(new CarDaoImpl());
+        doReturn(true).when(carDao).isVip(anyString());
+
+        vipParkingStrategy.carDao = carDao;
+
         Car car = new Car("AJ1");
-        doReturn(true).when(vipParkingStrategy).isAllowOverPark(car);
+
         Receipt receipt = vipParkingStrategy.park(parkingLots,car);
         assertEquals("Jay",receipt.getParkingLotName());
         assertEquals("AJ1",receipt.getCarName());
@@ -38,11 +43,16 @@ public class VipParkingStrategyTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         parkingLots.add(parkingLot);
         VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
-        Car car = new Car("QQ1");
-        doReturn(false).when(vipParkingStrategy).isAllowOverPark(car);
+        CarDao carDao = spy(new CarDaoImpl());
+        doReturn(false).when(carDao).isVip(anyString());
+
+        vipParkingStrategy.carDao = carDao;
+
+        Car car = new Car("AJ1");
+
         Receipt receipt = vipParkingStrategy.park(parkingLots,car);
-        assertEquals("QQ1",receipt.getCarName());
         assertEquals(ParkingStrategy.NO_PARKING_LOT,receipt.getParkingLotName());
+        assertEquals("AJ1",receipt.getCarName());
 
     }
 
@@ -53,6 +63,15 @@ public class VipParkingStrategyTest {
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
          */
+
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        CarDao newCarDao = spy(new CarDaoImpl());
+        doReturn(true).when(newCarDao).isVip(anyString());
+        vipParkingStrategy.carDao = newCarDao;
+
+        Car car = new Car("AJ1");
+        assertTrue(vipParkingStrategy.isAllowOverPark(car));
+
     }
 
     @Test
@@ -62,6 +81,14 @@ public class VipParkingStrategyTest {
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
          */
+        //refactor the private to public
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        CarDao newCarDao = spy(new CarDaoImpl());
+        doReturn(true).when(newCarDao).isVip(anyString());
+        vipParkingStrategy.carDao = newCarDao;
+
+        Car car = new Car("QQ1");
+        assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
     @Test
@@ -70,6 +97,13 @@ public class VipParkingStrategyTest {
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
          */
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        CarDao newCarDao = spy(new CarDaoImpl());
+        doReturn(false).when(newCarDao).isVip(anyString());
+        vipParkingStrategy.carDao = newCarDao;
+
+        Car car = new Car("AQ1");
+        assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
     @Test
@@ -78,6 +112,13 @@ public class VipParkingStrategyTest {
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
          */
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        CarDao newCarDao = spy(new CarDaoImpl());
+        doReturn(false).when(newCarDao).isVip(anyString());
+        vipParkingStrategy.carDao = newCarDao;
+
+        Car car = new Car("QJ1");
+        assertFalse(vipParkingStrategy.isAllowOverPark(car));
     }
 
     private Car createMockCar(String carName) {
