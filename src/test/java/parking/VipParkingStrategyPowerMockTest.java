@@ -27,7 +27,8 @@ public class VipParkingStrategyPowerMockTest {
         mockStatic(Calendar.class);
         when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.SUNDAY);
         when(ParkingLot.getBasicHourlyPrice()).thenReturn(50);
-        assertEquals(50,ParkingLot.getBasicHourlyPrice());
+        InOrderParkingStrategy inOrderParkingStrategy = new InOrderParkingStrategy();
+        assertEquals(50,(int)inOrderParkingStrategy.calculateHourlyPrice());
     }
 
     @Test
@@ -40,6 +41,7 @@ public class VipParkingStrategyPowerMockTest {
         mockStatic(Calendar.class);
         when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
         when(ParkingLot.getBasicHourlyPrice()).thenReturn(40);
-        assertEquals(40,ParkingLot.getBasicHourlyPrice());
+        InOrderParkingStrategy inOrderParkingStrategy = new InOrderParkingStrategy();
+        assertEquals(40,(int)inOrderParkingStrategy.calculateHourlyPrice());
     }
 }
