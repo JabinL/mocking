@@ -50,6 +50,10 @@ public class InOrderParkingStrategyTest {
         Receipt receipt = inOrderParkingStrategy.park(parkingLots,car);
         assertEquals("che",receipt.getCarName());
         assertEquals(ParkingStrategy.NO_PARKING_LOT,receipt.getParkingLotName());
+
+        verify(parkingLotA,times(1)).isFull();
+        verify(parkingLotB,times(1)).isFull();
+
     }
 
     @Test
@@ -74,6 +78,8 @@ public class InOrderParkingStrategyTest {
         Receipt receipt = inOrderParkingStrategy.park(parkingLots,car);
         assertEquals("che",receipt.getCarName());
         assertEquals("C",receipt.getParkingLotName());
+        verify(parkingLotA,times(1)).isFull();
+        verify(parkingLotB,times(1)).isFull();
     }
 
     @Test

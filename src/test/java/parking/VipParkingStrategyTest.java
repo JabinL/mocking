@@ -2,6 +2,10 @@ package parking;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class VipParkingStrategyTest {
@@ -11,6 +15,16 @@ public class VipParkingStrategyTest {
 
 	    /* Exercise 4, Write a test case on VipParkingStrategy.park()
 	    * With using Mockito spy, verify and doReturn */
+        ParkingLot parkingLot = spy(new ParkingLot("Jay",10));
+        doReturn(true).when(parkingLot).isFull();
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
+        VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+        Car car = new Car("AJ1");
+        doReturn(true).when(vipParkingStrategy).isAllowOverPark(car);
+        Receipt receipt = vipParkingStrategy.park(parkingLots,car);
+        assertEquals("Jay",receipt.getParkingLotName());
+        assertEquals("AJ1",receipt.getCarName());
 
     }
 
